@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.compose.SubcomposeAsyncImage
-import common.DateUtil
+import common.util.DateUtil
 import features.main.domain.NewsModel
 import kotlinx.datetime.Clock
 import ui.theme.textColor

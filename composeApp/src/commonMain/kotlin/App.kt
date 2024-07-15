@@ -10,6 +10,7 @@ import coil3.request.CachePolicy
 import coil3.request.crossfade
 import coil3.util.DebugLogger
 import features.main.presentions.screens.MainScreen
+import io.ktor.client.engine.HttpClientEngine
 import okio.FileSystem
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import ui.theme.AppTheme

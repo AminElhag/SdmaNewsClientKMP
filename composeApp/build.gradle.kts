@@ -36,6 +36,8 @@ kotlin {
             implementation(libs.androidx.activity.compose)
             implementation(libs.androidx.core.splashscreen)
             implementation(libs.ktor.client.okhttp)
+            implementation(libs.koin.android)
+            implementation(libs.koin.androidx.compose)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -49,14 +51,22 @@ kotlin {
             implementation(libs.voyager.tab.navigator)
             implementation(libs.voyager.transitions)
             implementation(libs.kotlinx.serialization.json)
-            implementation(libs.ktor.core)
             implementation(libs.coil.compose.core)
             implementation(libs.coil.mp)
             implementation(libs.coil.network.ktor)
             implementation(libs.coil.compose)
             implementation(libs.kotlinx.datetime)
+            implementation(libs.lifecycle.viewmodel.compose)
+            implementation(libs.bundles.ktor)
+            implementation(libs.napier)
+
+            api(libs.koin.core)
+            implementation(libs.koin.compose)
+            implementation(libs.koin.compose.viewmodel)
+            implementation(libs.lifecycle.viewmodel)
+            implementation(libs.navigation.compose)
         }
-        iosMain.dependencies {
+        nativeMain.dependencies {
             implementation(libs.ktor.client.darwin)
         }
     }
