@@ -27,7 +27,7 @@ import cafe.adriel.voyager.navigator.LocalNavigator
 import com.plusmobileapps.konnectivity.Konnectivity
 import common.components.ErrorScreen
 import common.components.NothingToShowScreen
-import common.components.ShimmerListItem
+import features.main.presentions.components.ShimmerListItem
 import features.main.presentions.components.NewsItem
 import features.main.presentions.viewmodel.MainViewModel
 import features.newsDetails.presentaions.screens.NewsDetailsScreen
