@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
@@ -15,9 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.painterResource
 import sdmanewsclientkmp.composeapp.generated.resources.Res
 import sdmanewsclientkmp.composeapp.generated.resources.man
@@ -45,17 +45,16 @@ fun ErrorScreen(
         Spacer(modifier = Modifier.width(28.dp))
         Text(
             errorMessage,
-            color = MaterialTheme.colorScheme.error,
-            style = TextStyle(
-                fontSize = 28.sp
-            )
+            modifier = Modifier
+                .padding(6.dp),
+            color = textColor,
         )
         Spacer(modifier = Modifier.width(28.dp))
         Button(
             onClick = onRetry,
             colors = ButtonDefaults.buttonColors(contentColor = MaterialTheme.colorScheme.primary)
         ) {
-            Text("Retry", color = textColor)
+            Text("اعد المحاولة", color = textColor)
         }
     }
 }

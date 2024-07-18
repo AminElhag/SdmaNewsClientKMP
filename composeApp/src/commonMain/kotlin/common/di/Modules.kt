@@ -4,6 +4,9 @@ import features.main.data.remote.MainClient
 import features.main.data.repository.MainApi
 import features.main.data.repository.MainRepository
 import features.main.presentions.viewmodel.MainViewModel
+import features.newsDetails.data.remote.NewsDetailsClient
+import features.newsDetails.data.repository.NewsDetailsRepository
+import features.newsDetails.presentaions.viewmodel.NewsDetailsViewModel
 import networking.createHttpClient
 import org.koin.compose.viewmodel.dsl.viewModelOf
 import org.koin.core.module.Module
@@ -23,4 +26,12 @@ val sharedModule = module {
         MainRepository(get())
     }.bind<MainApi>()
     viewModelOf(::MainViewModel)
+
+    single {
+        NewsDetailsClient(get())
+    }
+    single {
+        NewsDetailsRepository(get())
+    }
+    viewModelOf(::NewsDetailsViewModel)
 }

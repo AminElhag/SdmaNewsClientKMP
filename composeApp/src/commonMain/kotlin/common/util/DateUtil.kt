@@ -52,12 +52,6 @@ class DateUtil {
                                 year()
                             }
                         )
-                        chars(" - ")
-                        time(
-                            LocalTime.Format {
-                                hour(); char(':'); minute()
-                            }
-                        )
                     }
                 )
             } catch (e: Exception) {

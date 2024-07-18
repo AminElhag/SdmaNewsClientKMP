@@ -1,5 +1,6 @@
 package features.main.presentions.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,14 +22,20 @@ import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import coil3.compose.SubcomposeAsyncImage
 import common.util.DateUtil
-import features.main.domain.NewsModel
+import features.main.domain.ShortNewsModel
 import kotlinx.datetime.Clock
 import ui.theme.textColor
 
 @Composable
-fun NewsItem(item: NewsModel) {
-    Row {
-        println(Clock.System.now().toString())
+fun NewsItem(
+    item: ShortNewsModel,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier.clickable {
+            onClick.invoke()
+        }
+    ) {
         SubcomposeAsyncImage(
             modifier = Modifier.size(100.dp).padding(start = 16.dp, top = 16.dp),
             model = item.imageUrl,
@@ -64,7 +71,6 @@ fun NewsItem(item: NewsModel) {
                     color = textColor
                 )
             }
-
         }
     }
 }

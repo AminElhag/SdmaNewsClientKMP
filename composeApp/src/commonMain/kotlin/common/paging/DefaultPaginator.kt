@@ -1,6 +1,6 @@
 package common.paging
 
-import networking.util.NetworkError
+import networking.util.ErrorResponse
 import networking.util.Result
 import networking.util.onError
 import networking.util.onSuccess
@@ -8,9 +8,9 @@ import networking.util.onSuccess
 class DefaultPaginator<Key, Item>(
     private val initialKey: Key,
     private inline val onLoadUpdated: (Boolean) -> Unit,
-    private inline val onRequest: suspend (nextKey: Key) -> Result<List<Item>, NetworkError>,
+    private inline val onRequest: suspend (nextKey: Key) -> Result<List<Item>, ErrorResponse>,
     private inline val getNextKey: suspend (List<Item>) -> Key,
-    private inline val onError: suspend (NetworkError?) -> Unit,
+    private inline val onError: suspend (ErrorResponse?) -> Unit,
     private inline val onSuccess: suspend (items: List<Item>, newKey: Key) -> Unit
 ) : Paginator<Key, Item> {
 

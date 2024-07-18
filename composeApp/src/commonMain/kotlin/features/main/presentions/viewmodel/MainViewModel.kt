@@ -5,18 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import common.ResultState
 import common.paging.DefaultPaginator
 import features.main.data.repository.MainRepository
-import features.main.domain.NewsModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import features.main.domain.ShortNewsModel
 import kotlinx.coroutines.launch
-import networking.util.NetworkError
-import networking.util.Result
-import networking.util.onError
-import networking.util.onSuccess
+import networking.util.ErrorResponse
 
 class MainViewModel(
     private val repository: MainRepository
@@ -30,7 +23,7 @@ class MainViewModel(
     private val paginator = DefaultPaginator(
         initialKey = state.page,
         onLoadUpdated = {
-            state = state.copy(isListLoading = it, isLoading = false)
+            state = state.copy(isListLoading = it)
         },
         onRequest = { nextPage ->
             repository.getLastNews(nextPage, PAGE_SIZE)
@@ -39,14 +32,16 @@ class MainViewModel(
             state.page + 1
         },
         onError = {
-            state = state.copy(error = it?.message, isLoading = false)
+            if (it is ErrorResponse) {
+                state = state.copy(error = it.message, isFirstLoad = false)
+            }
         },
         onSuccess = { items, newKey ->
             state = state.copy(
                 items = state.items + items,
                 page = newKey,
                 endReached = items.isEmpty(),
-                isLoading = false
+                isFirstLoad = false
             )
         }
     )
@@ -57,40 +52,25 @@ class MainViewModel(
 
     fun loadNextItems() {
         viewModelScope.launch {
-            state = state.copy(isLoading = true)
-            paginator.loadNextItems()
+            try {
+                paginator.loadNextItems()
+            } catch (e: Exception) {
+                e.printStackTrace()
+                state = state.copy(error = "الخادم في حالة صيانة حاليا", isFirstLoad = false)
+            }
         }
     }
 
-    private val _getLastNews =
-        MutableStateFlow<ResultState<Result<List<NewsModel>, NetworkError>>>(ResultState.Loading)
-    val getLastNews: StateFlow<ResultState<Result<List<NewsModel>, NetworkError>>> =
-        _getLastNews.asStateFlow()
-
-
-    fun getLastNews() {
-        viewModelScope.launch {
-            _getLastNews.value = ResultState.Loading
-            try {
-                repository.getLastNews(
-                    pageSize = PAGE_SIZE,
-                    page = 1
-                ).onError {
-                    _getLastNews.value = ResultState.Success(Result.Error(it))
-                }.onSuccess {
-                    _getLastNews.value = ResultState.Success(Result.Success(it))
-                }
-            } catch (e: Exception) {
-                _getLastNews.value = ResultState.Error(e)
-            }
-        }
+    fun retry() {
+        state = ScreenState()
+        loadNextItems()
     }
 }
 
 data class ScreenState(
-    val isLoading: Boolean = false,
+    val isFirstLoad: Boolean = true,
     val isListLoading: Boolean = false,
-    val items: List<NewsModel> = emptyList(),
+    val items: List<ShortNewsModel> = emptyList(),
     val error: String? = null,
     val endReached: Boolean = false,
     val page: Int = 0

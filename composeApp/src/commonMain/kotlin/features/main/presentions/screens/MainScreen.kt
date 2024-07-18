@@ -17,14 +17,20 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
+import com.plusmobileapps.konnectivity.Konnectivity
 import common.components.ErrorScreen
 import common.components.NothingToShowScreen
 import common.components.ShimmerListItem
 import features.main.presentions.components.NewsItem
 import features.main.presentions.viewmodel.MainViewModel
+import features.newsDetails.presentaions.screens.NewsDetailsScreen
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.annotation.KoinExperimentalAPI
 
@@ -34,8 +40,9 @@ class MainScreen : Screen {
     override fun Content() {
         val viewModel = koinViewModel<MainViewModel>()
         val state = viewModel.state
-
-
+        val navigator = LocalNavigator.current
+        val konnectivity = remember { Konnectivity() }
+        val isConnected by konnectivity.isConnectedState.collectAsState()
         Scaffold(
             modifier = Modifier.fillMaxSize(),
             topBar = {
@@ -58,44 +65,61 @@ class MainScreen : Screen {
                 })
             },
         ) { values ->
-            if (state.isLoading) {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize().padding(values)
-                ) {
-                    items(6) {
-                        ShimmerListItem(
-                            modifier = Modifier.fillMaxSize().padding(16.dp)
-                        )
-                    }
-                }
-            } else if (state.error != null) {
-                ErrorScreen(modifier = Modifier.padding(values),
-                    errorMessage = state.error,
-                    onRetry = {
-                        viewModel.getLastNews()
-                    })
-            } else if (state.items.isEmpty()) {
-                NothingToShowScreen(modifier = Modifier.padding(values))
-            } else {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize().padding(values)
-                ) {
-                    items(state.items.size) {
-                        val item = state.items[it]
-                        if (it >= state.items.size - 1 && !state.endReached && !state.isListLoading) {
-                            viewModel.loadNextItems()
+            if (isConnected) {
+                if (state.isFirstLoad) {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize().padding(values)
+                    ) {
+                        items(6) {
+                            ShimmerListItem(
+                                modifier = Modifier.fillMaxSize().padding(16.dp)
+                            )
                         }
-                        NewsItem(item)
                     }
-                    item {
-                        if (state.isListLoading) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth().padding(8.dp),
-                                horizontalArrangement = Arrangement.Center
+                } else if (state.error != null) {
+                    ErrorScreen(modifier = Modifier.padding(values),
+                        errorMessage = state.error,
+                        onRetry = {
+                            if (isConnected) {
+                                viewModel.retry()
+                            }
+                        })
+                } else if (state.items.isEmpty()) {
+                    NothingToShowScreen(modifier = Modifier.padding(values))
+                } else {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize().padding(values)
+                    ) {
+                        items(state.items.size) {
+                            val item = state.items[it]
+                            if (it >= state.items.size - 1 && !state.endReached && !state.isListLoading) {
+                                viewModel.loadNextItems()
+                            }
+                            NewsItem(
+                                item,
                             ) {
-                                CircularProgressIndicator()
+                                navigator?.push(NewsDetailsScreen(item.id))
                             }
                         }
+                        item {
+                            if (state.isListLoading) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth().padding(8.dp),
+                                    horizontalArrangement = Arrangement.Center
+                                ) {
+                                    CircularProgressIndicator()
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                ErrorScreen(
+                    modifier = Modifier.padding(values),
+                    errorMessage = "لا يوجد اتصال بالانترنت الرجاء تفعيل الانترنت و المحاولة مجددا"
+                ) {
+                    if (isConnected) {
+                        viewModel.retry()
                     }
                 }
             }

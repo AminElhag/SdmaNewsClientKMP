@@ -1,8 +1,9 @@
 package features.main.data.repository
 
 import features.main.data.remote.MainClient
-import features.main.domain.NewsModel
-import networking.util.NetworkError
+import features.main.domain.ShortNewsModel
+import networking.util.Error
+import networking.util.ErrorResponse
 import networking.util.Result
 
 class MainRepository(
@@ -11,7 +12,7 @@ class MainRepository(
     override suspend fun getLastNews(
         page: Int,
         pageSize: Int
-    ): Result<List<NewsModel>, NetworkError> {
+    ): Result<List<ShortNewsModel>, ErrorResponse> {
         return mainClient.getLastNews(page, pageSize)
     }
 }
