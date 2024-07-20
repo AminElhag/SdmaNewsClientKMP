@@ -62,7 +62,7 @@ class MainViewModel(
     }
 
     fun retry() {
-        state = ScreenState()
+        paginator.reset()
         loadNextItems()
     }
 }
