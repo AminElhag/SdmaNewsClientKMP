@@ -11,3 +11,10 @@
 الأخبار المقترحة لك: تابِع من خلال هذا القسم مستجدّات المواضيع التي تهمّك، مثل الرياضة أو السياسة أو الأعمال أو التكنولوجيا أو الطقس.
 
 ميزة  نؤمن أن المحتوى الصحفي الجيد لا يُقدّر بثمن.
+![image1](https://github.com/user-attachments/assets/5d3223ce-3801-42be-9e28-41b2a47c2cfd)
+![image2](https://github.com/user-attachments/assets/26a63196-f77b-45da-9043-49c8779b1db5)
+![image3](https://github.com/user-attachments/assets/2cd946e5-7b3b-4775-8def-992144bc8e46)
+![image4](https://github.com/user-attachments/assets/acec0233-8e40-4932-9c7e-5ccf010361d1)
+![image5](https://github.com/user-attachments/assets/aaf11c14-74f1-401c-8ca2-a390bfe5998e)
+![image6](https://github.com/user-attachments/assets/95fdf666-36aa-4ea0-8586-45b657275fbb)
+![image7](https://github.com/user-attachments/assets/d95a62d7-1a76-4c2a-9bc9-81660bc9d9e9)
