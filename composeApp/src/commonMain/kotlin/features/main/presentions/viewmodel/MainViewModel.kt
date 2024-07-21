@@ -62,6 +62,7 @@ class MainViewModel(
     }
 
     fun retry() {
+        state = state.copy(isFirstLoad = true, error = null, page = 0)
         paginator.reset()
         loadNextItems()
     }

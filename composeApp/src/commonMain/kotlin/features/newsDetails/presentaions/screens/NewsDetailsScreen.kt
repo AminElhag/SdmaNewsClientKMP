@@ -76,7 +76,7 @@ class NewsDetailsScreen(
         ) { value ->
             when (state.value) {
                 is ResultState.Loading -> {
-                    ShimmerNewsDetails(modifier = Modifier.padding(value))
+                    ShimmerNewsDetails(modifier = Modifier.padding(value).fillMaxSize())
                 }
 
                 is ResultState.Error -> {
